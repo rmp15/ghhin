@@ -1,0 +1,54 @@
+year,disaster subtype,occurrence,Total deaths,Injured,Affected,Homeless,Total affected,Total damage
+1936,Heat wave,2,1693,,,,,
+1951,Heat wave,1,44,,,,,
+1953,Heat wave,3,669,,,,,
+1955,Heat wave,1,107,,,,,
+1958,Heat wave,1,651,,,,,
+1962,Heat wave,1,50,,,,,
+1965,Heat wave,1,100,,,,,
+1966,Heat wave,2,262,,,,,
+1968,Heat wave,2,153,,,,,
+1972,Heat wave,2,110,,,,,
+1973,Heat wave,1,22,,,,,
+1975,Heat wave,2,70,,,,,
+1978,Heat wave,1,150,,,,,
+1979,Heat wave,3,470,,,,,
+1980,Heat wave,2,1310,,,,,2000000
+1983,Heat wave,2,205,,2700,,2700,
+1985,Heat wave,2,123,,,,,
+1986,Heat wave,1,48,,,,,1750000
+1987,Heat wave,4,1180,10,,,10,
+1988,Heat wave,4,544,200,,,200,
+1990,Heat wave,4,436,,,,,
+1991,Heat wave,1,523,,250,,250,
+1993,Heat wave,2,65,500,3000000,,3000500,
+1994,Heat wave,5,270,184,1100000,,1100184,
+1995,Heat wave,6,1311,170,500000,,500170,
+1996,Heat wave,3,70,200,,,200,
+1997,Heat wave,2,116,,180,,180,
+1998,Heat wave,5,2753,100,,,100,4275000
+1999,Heat wave,4,440,,,,,1000000
+2000,Heat wave,13,165,1258,,,1258,244859
+2001,Heat wave,3,332,,,,,200000
+2002,Heat wave,5,1224,3524,,,3524,
+2003,Heat wave,19,73722,,,,,12520000
+2004,Heat wave,7,133,413,,,413,
+2005,Heat wave,7,943,931,,,931,
+2006,Heat wave,11,3737,300,,,300,
+2007,Heat wave,15,701,3139,352,,3491,
+2008,Heat wave,1,47,,,,,
+2009,Heat wave,3,483,2025,,,2025,
+2010,Heat wave,4,56188,,15000,,15000,400000
+2011,Heat wave,3,68,22000,,,22000,
+2012,Heat wave,1,123,,,,,
+2013,Heat wave,5,1713,54000,17490,,71490,
+2014,Heat wave,3,305,17000,,,17000,18000
+2015,Heat wave,9,7327,14933,80000,,94933,
+2016,Heat wave,3,314,510,,,510,
+2017,Heat wave,2,38,,,,,
+,,,,,,,,
+,,,,,,,,
+"Created on: August 10, 2017",,,,,,,,
+"Source: EM-DAT: The Emergency Events Database - Universite catholique de Louvain (UCL) - CRED, D. Guha-Sapir - www.emdat.be, Brussels, Belgium",deaths 1995-2015,,151901,,,,,
+,deaths per year 1995-2015,,7233.380952,,,,,
+,,,,,,,5,
