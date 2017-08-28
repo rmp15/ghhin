@@ -54,7 +54,6 @@ climate.timeseries = function(dname,scenario,model,rest,date) {
     tmonth = as.integer(unlist(tdstr)[2])
     tday = as.integer(unlist(tdstr)[3])
     tyear = as.integer(unlist(tdstr)[1])
-    #t.names <- as.POSIXct(t, origin = "2046-01-01")
     t.names <- as.Date(t,origin = date)
     
     # stamp as character names
@@ -84,8 +83,16 @@ dat = climate.timeseries('itmax','A2','csiro_mk3','0_sresa1b_20_72.5714E_23.0225
 # 2081-2100
 dat2 = climate.timeseries('itmax','A2','csiro_mk3','0_sresa1b_21_72.5714E_23.0225N_n_su','2081-01-01')
 
-# create statistics for two time periods
-dat.stats2 <- ddply(dat2,.(month),summarize,days=sum(count))
+# function to create statistics from data tables
+data.summary = function(dataset){
+    dataset.summary     = count(dataset,'color')
+    dataset.summary$percent = round(100 * (dataset.summary$freq / sum(dataset.summary$freq)),1)
+    return(dataset.summary)
+}
+
+# create statistics for two projection periods
+dat.summary     = data.summary(dat)
+dat2.summary    = data.summary(dat2)
 
 # limits for plots
 ymax = max(dat0$temp,dat$temp,dat2$temp) + 2
