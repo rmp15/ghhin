@@ -1,9 +1,5 @@
 # Extracting NetCDF files
 
-# From:
-# https://github.com/rmp15/climate/blob/master/extract_netcdf_data.R
-# http://geog.uoregon.edu/bartlein/courses/geog607/Rmd/netCDF_01.htm
-
 rm(list=ls())
 
 library(RColorBrewer)
@@ -143,14 +139,9 @@ dev.off()
 # save timeseries as RDS
 #saveRDS()
 
-
-
-
-
-
-
-
-
+# From:
+# https://github.com/rmp15/climate/blob/master/extract_netcdf_data.R
+# http://geog.uoregon.edu/bartlein/courses/geog607/Rmd/netCDF_01.htm
 
 
 
