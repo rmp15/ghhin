@@ -19,7 +19,7 @@ for var in "${vars[@]}"; do
 for model in "${models[@]}"; do
 
 # create file architecture to store files
-dir="~/data/climate/net_cdf/" ; dir+="$var/" ; dir+="$rcp/" ; dir+="$model/" ; dir+="raw/" ;
+dir="//data/climate/net_cdf/" ; dir+="$var/" ; dir+="$rcp/" ; dir+="$model/" ; dir+="raw/" ;
 mkdir -p "$dir"
 
 # downloads the desired climate variable globally
