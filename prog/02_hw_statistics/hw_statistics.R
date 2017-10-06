@@ -30,7 +30,7 @@ scenario <- 'A2'
 #freq <- as.character(args[3])
 model <- 'csiro_mk3'
 #num <- as.character(args[4])
-rest <- '0_20c3m_72.5714E_23.0225N_n_su_01'
+rest <- '0_20c3m_72.5714E_23.0225N_n_su_00'
 ncname <- paste0(dname,'_',scenario,'_',model,'_',rest,'.nc')
 
 #year <- unlist(strsplit(ncname, "_"))
@@ -38,7 +38,7 @@ ncname <- paste0(dname,'_',scenario,'_',model,'_',rest,'.nc')
 #year <- unlist(strsplit(year, ".nc"))
 
 # open NetCDF file
-ncin <- nc_open(paste0('~/data/ghhin/net_cdf/',dname,'/raw/',ncname))
+ncin <- nc_open(paste0('~/git/wmo/data/knmi/ahmedabad/ghhin/1961_2000/',dname,'/raw/',ncname))
 
 # extract climate variable
 varname <- 'tasmax'

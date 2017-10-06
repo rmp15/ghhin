@@ -11,14 +11,29 @@ library(plyr)
 
 # arguments from Rscript
 args <- commandArgs(trailingOnly=TRUE)
+#location   = args[1]
+#dname      = args[2]
+#scenario   = args[3]
+#model      = args[4]
+#rest       = args[5]
+#years      = args[6]
+#date       = args[7]
+
+location    = 'ahmedabad'
+dname       = 'itmax'
+scenario    = 'A2'
+model       = 'cccma_cgcm3_1
+#rest        =
+#years       =
+#date        =
 
 # function to load appropriate climate data
-climate.timeseries = function(dname,scenario,model,rest,date) {
+climate.timeseries = function(location,dname,scenario,model,rest,years,date) {
 
     ncname <- paste0(dname,'_',scenario,'_',model,'_',rest,'.nc')
     
     # open NetCDF file
-    ncin <- nc_open(paste0('~/data/wmo/net_cdf/',dname,'/raw/',ncname))
+    ncin <- nc_open(paste0('~/git/wmo/data/knmi/net_cdf/',location,'/',dname,'/',model,'/',years,'/',ncname))
     
     # extract climate variable
     varname <- 'tasmax'
@@ -71,69 +86,99 @@ climate.timeseries = function(dname,scenario,model,rest,date) {
 }
 
 # 1961-2000
-dat0 = climate.timeseries('itmax','A2','csiro_mk3','0_20c3m_72.5714E_23.0225N_n_su_01','1961-01-01')
+dat0 = climate.timeseries(location,dname,scenario,model,'20c3m_72.5714E_23.0225N_n_su_00','1961_2000','1961-01-01')
 
 # 2046-2065
-dat = climate.timeseries('itmax','A2','csiro_mk3','0_sresa1b_20_72.5714E_23.0225N_n_su','2046-01-01')
+dat = climate.timeseries(location,dname,scenario,model,'sresa1b_20_72.5714E_23.0225N_n_su_00','2046_2065','2046-01-01')
 
 # 2081-2100
-dat2 = climate.timeseries('itmax','A2','csiro_mk3','0_sresa1b_21_72.5714E_23.0225N_n_su','2081-01-01')
+dat2 = climate.timeseries(location,dname,scenario,model,'sresa1b_21_72.5714E_23.0225N_n_su_00','2081_2100','2081-01-01')
 
 # function to create statistics from data tables
 data.summary = function(dataset){
     dataset.summary     = count(dataset,'color')
     dataset.summary$percent = round(100 * (dataset.summary$freq / sum(dataset.summary$freq)),1)
+    dataset.summary$days = round((dataset.summary$percent * 365) / 100,1)
+    
+    # order for white, yellow, orange, red
+    dataset.summary$color = as.factor(dataset.summary$color)
+    dataset.summary$color <- factor(dataset.summary$color, levels = c("white","yellow","orange","red"))
+    
     return(dataset.summary)
 }
 
 # create statistics for two projection periods
-dat.summary     = data.summary(dat)
-dat2.summary    = data.summary(dat2)
+dat0.summary    = data.summary(dat0) ; dat0.summary$years=   '1961-2000'
+dat.summary     = data.summary(dat) ;  dat.summary$years=    '2046-2065'
+dat2.summary    = data.summary(dat2);  dat2.summary$years=   '2081-2100'
+
+dat.summary.complete = rbind(dat0.summary,dat.summary,dat2.summary)
+
+# PLOTS OF THE STATISTICS
+
+# create directory for output
+file.loc <- paste0('~/git/wmo/output/alert_stats/',location,'/',model,'/')
+ifelse(!dir.exists(file.loc), dir.create(file.loc, recursive=TRUE), FALSE)
+
+pdf(paste0(file.loc,location,'_',model,'.pdf'),height=0,width=0,paper='a4r')
+
+print(ggplot() +
+geom_point(data=dat.summary.complete,aes(x=color,y=days,color=as.factor(years))) +
+xlab('alert level') +
+ylab('number of days per year') +
+labs(color='years') +
+ggtitle(paste0(location,' ',scenario,' ',model,': number of alert days')) +
+theme_bw()
+)
+
+dev.off()
+
+# PLOTS OF THE ACTUAL DAYS
 
 # limits for plots
-ymax = max(dat0$temp,dat$temp,dat2$temp) + 2
-ymin = min(dat0$temp,dat$temp,dat2$temp) - 2
+#ymax = max(dat0$temp,dat$temp,dat2$temp) + 2
+#ymin = min(dat0$temp,dat$temp,dat2$temp) - 2
 
 # plot timeseries
 
-pdf(paste0('../../output/plot1.pdf'),height=0,width=0,paper='a4r')
+#pdf(paste0('../../output/plot1.pdf'),height=0,width=0,paper='a4r')
 
-print(ggplot() +
-geom_line(data=subset(dat0,year %in% c(1981:2000)),aes(x=time,y=temp)) +
-geom_point(data=subset(dat0,year %in% c(1981:2000)),aes(x=time,y=temp,color=color)) +
-ylim(c(ymin,ymax)) +
-ggtitle('A2 Ahmedabad 1981-2000') +
-scale_color_manual(values=c("white"="black", "yellow"="yellow", "orange"="orange", "red"="red")) +
-guides(color=FALSE) +
-theme_bw())
+#print(ggplot() +
+#geom_line(data=subset(dat0,year %in% c(1981:2000)),aes(x=time,y=temp)) +
+#geom_point(data=subset(dat0,year %in% c(1981:2000)),aes(x=time,y=temp,color=color)) +
+#ylim(c(ymin,ymax)) +
+#ggtitle('A2 Ahmedabad 1981-2000') +
+#scale_color_manual(values=c("white"="black", "yellow"="yellow", "orange"="orange", "red"="red")) +
+#guides(color=FALSE) +
+#theme_bw())
 
-dev.off()
+#dev.off()
 
-pdf(paste0('../../output/plot2.pdf'),height=0,width=0,paper='a4r')
+#pdf(paste0('../../output/plot2.pdf'),height=0,width=0,paper='a4r')
 
-print(ggplot() +
-geom_line(data=dat,aes(x=time,y=temp)) +
-geom_point(data=dat,aes(x=time,y=temp,color=color)) +
-ylim(c(ymin,ymax)) +
-ggtitle('A2 Ahmedabad 2046-2065') +
-scale_color_manual(values=c("white"="black", "yellow"="yellow", "orange"="orange", "red"="red")) +
-guides(color=FALSE) +
-theme_bw())
+#print(ggplot() +
+#geom_line(data=dat,aes(x=time,y=temp)) +
+#geom_point(data=dat,aes(x=time,y=temp,color=color)) +
+#ylim(c(ymin,ymax)) +
+#ggtitle('A2 Ahmedabad 2046-2065') +
+#scale_color_manual(values=c("white"="black", "yellow"="yellow", "orange"="orange", "red"="red")) +
+#guides(color=FALSE) +
+#theme_bw())
 
-dev.off()
+#dev.off()
 
-pdf(paste0('../../output/plot3.pdf'),height=0,width=0,paper='a4r')
+#pdf(paste0('../../output/plot3.pdf'),height=0,width=0,paper='a4r')
 
-print(ggplot() +
-geom_line(data=dat2,aes(x=time,y=temp)) +
-geom_point(data=dat2,aes(x=time,y=temp,color=color)) +
-ylim(c(ymin,ymax)) +
-ggtitle('A2 Ahmedabad 2081-2100') +
-scale_color_manual(values=c("white"="black", "yellow"="yellow", "orange"="orange", "red"="red")) +
-guides(color=FALSE) +
-theme_bw())
+#print(ggplot() +
+#geom_line(data=dat2,aes(x=time,y=temp)) +
+#geom_point(data=dat2,aes(x=time,y=temp,color=color)) +
+#ylim(c(ymin,ymax)) +
+#ggtitle('A2 Ahmedabad 2081-2100') +
+#scale_color_manual(values=c("white"="black", "yellow"="yellow", "orange"="orange", "red"="red")) +
+#guides(color=FALSE) +
+#theme_bw())
 
-dev.off()
+#dev.off()
 
 
 # save timeseries as RDS
